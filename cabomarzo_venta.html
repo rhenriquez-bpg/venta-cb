@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PH Cabomarzo - San Francisco, Panama</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: linear-gradient(180deg, #f5f7fa 0%, #eef2f7 100%);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 30px rgba(0,0,0,0.1);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1a3a52 0%, #2c5aa0 50%, #3d7bb8 100%),
+                        url('IMG_1127.jpeg') center/cover no-repeat;
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .header::before {
+            content: "🌆 🌊 ⛵";
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5em;
+            opacity: 0.7;
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.98;
+            font-style: italic;
+            margin-bottom: 15px;
+            font-weight: 300;
+        }
+
+        .location {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            margin-top: 15px;
+            font-size: 1em;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        /* Precio destacado */
+        .price-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf2 100%);
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 4px solid #2c5aa0;
+            position: relative;
+        }
+
+        .price-section::after {
+            content: "💎";
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 2em;
+            opacity: 0.3;
+        }
+
+        .price-label {
+            font-size: 0.95em;
+            color: #1a3a52;
+            margin-bottom: 10px;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .price {
+            font-size: 3.2em;
+            color: #1a3a52;
+            font-weight: 900;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .negotiable {
+            font-size: 1em;
+            color: #2c5aa0;
+            font-style: italic;
+            font-weight: 500;
+        }
+
+        /* Características principales */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 40px 20px;
+            background: linear-gradient(180deg, #f5f9fd 0%, #f0f5fa 100%);
+            border-bottom: 3px solid #2c5aa0;
+        }
+
+        .feature {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(45, 90, 160, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(45, 90, 160, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 2.8em;
+            margin-bottom: 12px;
+        }
+
+        .feature-number {
+            font-size: 2em;
+            font-weight: 900;
+            color: #1a3a52;
+            margin-bottom: 5px;
+        }
+
+        .feature-label {
+            font-size: 0.9em;
+            color: #2c5aa0;
+            font-weight: 600;
+        }
+
+        /* Galería */
+        .gallery-container {
+            position: relative;
+            background: #000;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .gallery-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 75%;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+
+        .gallery-wrapper img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.5s;
+        }
+
+        .slide {
+            display: none;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        .gallery-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            color: white;
+        }
+
+        .gallery-btn {
+            background: #2c5aa0;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: background 0.3s;
+        }
+
+        .gallery-btn:hover {
+            background: #1a3a52;
+        }
+
+        .gallery-counter {
+            color: white;
+            font-size: 0.9em;
+        }
+
+        .dots {
+            text-align: center;
+            padding: 15px 0;
+        }
+
+        .dot {
+            height: 12px;
+            width: 12px;
+            margin: 0 5px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .dot.active {
+            background-color: #2c5aa0;
+        }
+
+        .dot:hover {
+            background-color: #717171;
+        }
+
+        /* Descripción */
+        .description {
+            padding: 40px 20px;
+            background: white;
+        }
+
+        .description h2 {
+            color: #1a3a52;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            font-weight: 700;
+            border-bottom: 3px solid #2c5aa0;
+            padding-bottom: 10px;
+        }
+
+        .description p {
+            margin-bottom: 15px;
+            color: #2c3e50;
+            line-height: 1.8;
+            font-size: 1.05em;
+        }
+
+        /* Amenidades */
+        .amenities {
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #f5f9fd 0%, #f0f5fa 100%);
+            border-top: 3px solid #2c5aa0;
+            border-bottom: 3px solid #2c5aa0;
+        }
+
+        .amenities h2 {
+            color: #1a3a52;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            font-weight: 700;
+            border-bottom: 3px solid #2c5aa0;
+            padding-bottom: 10px;
+        }
+
+        .amenities-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .amenity-item {
+            background: white;
+            padding: 18px;
+            border-radius: 10px;
+            border-left: 5px solid #2c5aa0;
+            box-shadow: 0 4px 12px rgba(45, 90, 160, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .amenity-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 6px 16px rgba(45, 90, 160, 0.18);
+        }
+
+        .amenity-item:before {
+            content: "✓ ";
+            color: #2c5aa0;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 1.1em;
+        }
+
+        /* Ubicación y contacto */
+        .footer {
+            padding: 40px 20px;
+            background: linear-gradient(180deg, #f5f7fa 0%, #f0f5fa 100%);
+            border-top: 3px solid #2c5aa0;
+        }
+
+        .footer h2 {
+            color: #1a3a52;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            font-weight: 700;
+            border-bottom: 3px solid #2c5aa0;
+            padding-bottom: 10px;
+        }
+
+        .gallery-note {
+            background: #f0f5fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-size: 0.9em;
+            text-align: center;
+            border-left: 4px solid #2c5aa0;
+        }
+
+        .whatsapp-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .whatsapp-btn {
+            display: inline-block;
+            padding: 14px 20px;
+            background: #25d366;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.95em;
+            transition: background 0.3s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .whatsapp-btn:hover {
+            background: #20ba5d;
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: white;
+            }
+            .container {
+                box-shadow: none;
+                max-width: 100%;
+            }
+            .whatsapp-btn {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .price {
+                font-size: 2em;
+            }
+
+            .features {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .amenities-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .whatsapp-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🏢 PH Cabomarzo</h1>
+            <p>Urban Luxury with Unbeatable Ocean Views</p>
+            <div class="location">📍 San Francisco, Panama</div>
+        </div>
+
+        <!-- Precio destacado -->
+        <div class="price-section">
+            <div class="price-label">PRICE</div>
+            <div class="price">$380,000</div>
+            <div class="negotiable">Negotiable</div>
+        </div>
+
+        <!-- Características principales -->
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">🛏️</div>
+                <div class="feature-number">High</div>
+                <div class="feature-label">Floor</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">📐</div>
+                <div class="feature-number">173m²</div>
+                <div class="feature-label">Living Area</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🌊</div>
+                <div class="feature-number">Ocean</div>
+                <div class="feature-label">View</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🅿️</div>
+                <div class="feature-number">2</div>
+                <div class="feature-label">Parkings</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🅿️</div>
+                <div class="feature-number">50+</div>
+                <div class="feature-label">Visitor Parkings</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">📦</div>
+                <div class="feature-number">1</div>
+                <div class="feature-label">Storage</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">⚡</div>
+                <div class="feature-number">Full</div>
+                <div class="feature-label">Generator</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">💧</div>
+                <div class="feature-number">Water</div>
+                <div class="feature-label">Reserve Tank</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🏘️</div>
+                <div class="feature-number">Gated</div>
+                <div class="feature-label">Community</div>
+            </div>
+        </div>
+
+        <!-- Galería de fotos -->
+        <div class="description">
+            <h2>Photo Gallery</h2>
+            <div class="gallery-container">
+                <div class="gallery-wrapper" id="gallery">
+                    <div class="slide active">
+                        <img src="IMG_1127.jpeg" alt="PH Cabomarzo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-family=%22Arial%22 font-size=%2218%22%3EPhoto 1%3C/text%3E%3C/svg%3E'">
+                    </div>
+                    <div class="slide">
+                        <img src="IMG_1128.jpeg" alt="PH Cabomarzo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-family=%22Arial%22 font-size=%2218%22%3EPhoto 2%3C/text%3E%3C/svg%3E'">
+                    </div>
+                    <div class="slide">
+                        <img src="IMG_1131.jpeg" alt="PH Cabomarzo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-family=%22Arial%22 font-size=%2218%22%3EPhoto 3%3C/text%3E%3C/svg%3E'">
+                    </div>
+                    <div class="slide">
+                        <img src="IMG_1133.jpeg" alt="PH Cabomarzo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-family=%22Arial%22 font-size=%2218%22%3EPhoto 4%3C/text%3E%3C/svg%3E'">
+                    </div>
+                    <div class="slide">
+                        <img src="IMG_1116.jpeg" alt="PH Cabomarzo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-family=%22Arial%22 font-size=%2218%22%3EPhoto 5%3C/text%3E%3C/svg%3E'">
+                    </div>
+                    <div class="slide">
+                        <img src="IMG_1119.jpeg" alt="PH Cabomarzo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-family=%22Arial%22 font-size=%2218%22%3EPhoto 6%3C/text%3E%3C/svg%3E'">
+                    </div>
+                    <div class="slide">
+                        <img src="IMG_1122.jpeg" alt="PH Cabomarzo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-family=%22Arial%22 font-size=%2218%22%3EPhoto 7%3C/text%3E%3C/svg%3E'">
+                    </div>
+                    <div class="slide">
+                        <img src="IMG_1123.jpeg" alt="PH Cabomarzo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-family=%22Arial%22 font-size=%2218%22%3EPhoto 8%3C/text%3E%3C/svg%3E'">
+                    </div>
+                </div>
+
+                <div class="gallery-controls">
+                    <button class="gallery-btn" onclick="changeSlide(-1)">← Previous</button>
+                    <span class="gallery-counter"><span id="current">1</span> / 8</span>
+                    <button class="gallery-btn" onclick="changeSlide(1)">Next →</button>
+                </div>
+
+                <div class="dots">
+                    <span class="dot active" onclick="currentSlide(1)"></span>
+                    <span class="dot" onclick="currentSlide(2)"></span>
+                    <span class="dot" onclick="currentSlide(3)"></span>
+                    <span class="dot" onclick="currentSlide(4)"></span>
+                    <span class="dot" onclick="currentSlide(5)"></span>
+                    <span class="dot" onclick="currentSlide(6)"></span>
+                    <span class="dot" onclick="currentSlide(7)"></span>
+                    <span class="dot" onclick="currentSlide(8)"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Descripción -->
+        <div class="description">
+            <h2>Property Description</h2>
+            <p>Welcome to <strong>PH Cabomarzo</strong>, a prestigious high-floor residence in the heart of <strong>San Francisco and Coco del Mar</strong>, Panama's most coveted neighborhoods. This exceptional penthouse offers breathtaking, unobstructed ocean views and views of cargo ships awaiting entry to the Panama Canal.</p>
+            <p>With a generous <strong>173m² of premium living space</strong> on a high floor, this property captures the essence of urban luxury. Located in an exclusive two-units-per-floor building, enjoy privacy and sophistication with direct marina and ocean vistas from multiple rooms.</p>
+            <p>This is the perfect choice for those seeking upscale city living combined with waterfront serenity and the unique perspective of international maritime activity.</p>
+        </div>
+
+        <!-- Amenidades -->
+        <div class="amenities">
+            <h2>Community Amenities & Features</h2>
+            <div class="amenities-grid">
+                <div class="amenity-item">Swimming Pool</div>
+                <div class="amenity-item">Kids Pool</div>
+                <div class="amenity-item">Kids Park</div>
+                <div class="amenity-item">Dog Park</div>
+                <div class="amenity-item">Event Room</div>
+                <div class="amenity-item">Equipped Gym</div>
+                <div class="amenity-item">24/7 Security</div>
+                <div class="amenity-item">Gated Community</div>
+                <div class="amenity-item">2 Units Per Floor</div>
+            </div>
+        </div>
+
+        <!-- Contacto -->
+        <div class="footer">
+            <h2>Contact Information</h2>
+
+            <div class="gallery-note">
+                📸 Full gallery available. Contact us to see more photos and schedule a visit.
+            </div>
+
+            <div class="whatsapp-buttons">
+                <a href="https://wa.me/50765651890?text=Hello%20I%20am%20interested%20in%20the%20PH%20Cabomarzo%20property%20in%20San%20Francisco" class="whatsapp-btn">
+                    📱 WhatsApp: +507 6565-1890
+                </a>
+                <a href="https://wa.me/50766157350?text=Hello%20I%20am%20interested%20in%20the%20PH%20Cabomarzo%20property%20in%20San%20Francisco" class="whatsapp-btn">
+                    📱 WhatsApp: +507 6615-7350
+                </a>
+            </div>
+
+            <p style="margin-top: 20px; text-align: center; color: #999; font-size: 0.9em;">
+                For more information, to schedule a visit, or request the complete photo gallery, contact us via WhatsApp.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let slideIndex = 1;
+
+        function changeSlide(n) {
+            showSlide(slideIndex += n);
+        }
+
+        function currentSlide(n) {
+            showSlide(slideIndex = n);
+        }
+
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.dot');
+
+            if (n > slides.length) {
+                slideIndex = 1;
+            }
+            if (n < 1) {
+                slideIndex = slides.length;
+            }
+
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+
+            slides[slideIndex - 1].classList.add('active');
+            dots[slideIndex - 1].classList.add('active');
+            document.getElementById('current').textContent = slideIndex;
+        }
+
+        // Inicializar galería
+        showSlide(slideIndex);
+
+        // Navegación con teclado
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft') changeSlide(-1);
+            if (event.key === 'ArrowRight') changeSlide(1);
+        });
+    </script>
+</body>
+</html>
